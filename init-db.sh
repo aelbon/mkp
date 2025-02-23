@@ -1,0 +1,22 @@
+#!/bin/bash
+set -e
+
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+
+CREATE USER mkp WITH PASSWORD 'mkp';
+CREATE USER mkpadmin WITH PASSWORD 'mkpadmin';
+
+-- Grant necessary permissions to mkp
+GRANT CONNECT ON DATABASE postgres TO mkp;
+GRANT USAGE ON SCHEMA public TO mkp;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO mkp;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public 
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO mkp;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO mkp;
+
+-- Grant all privileges to mkpadmin
+GRANT ALL PRIVILEGES ON DATABASE postgres TO mkpadmin;
+GRANT ALL PRIVILEGES ON SCHEMA public TO mkpadmin;
+ALTER DEFAULT PRIVILEGES FOR ROLE mkpadmin IN SCHEMA public 
+    GRANT ALL PRIVILEGES ON TABLES TO mkpadmin;
+EOSQL

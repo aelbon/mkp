@@ -1,0 +1,12 @@
+# Default: all files use LF line endings
+* text eol=lf
+
+# Text specializations:
+*.bat text eol=crlf
+
+# Binary:
+*.png Binary
+*.jpg binary
+
+# Should not happen (.gitignore):
+*.pyc binary

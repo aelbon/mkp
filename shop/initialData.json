@@ -1,0 +1,150 @@
+{
+  "users": [
+    {
+      "username": "admin_marketplaces",
+      "email": "admin@marketplaces.soops.intern",
+      "password": "securepassword1"
+    },
+    {
+      "username": "admin_watches",
+      "email": "admin@watches.soops.intern",
+      "password": "securepassword2"
+    },
+    {
+      "username": "admin_bentleys",
+      "email": "admin@bentleys.soops.intern",
+      "password": "securepassword3"
+    },
+    {
+      "username": "admin_spaceships",
+      "email": "admin@spaceships.soops.intern",
+      "password": "securepassword4"
+    }
+  ],
+  "shops": [
+    {
+      "name": "Marketplaces",
+      "description": "The best place to create your own stylish webshop to buy and sell anything and cater for any market.",
+      "owner": {
+        "username": "admin_marketplaces",
+        "email": "admin@marketplaces.soops.intern",
+        "password": "securepassword1"
+      },
+      "logo": "MarketPlaces_Logo.jpg",
+      "sites": [
+        {
+          "domain": "marketplaces.soops.intern",
+          "name": "Marketplaces"
+        },
+        {
+          "domain": "marketplaces.christiaan.intern",
+          "name": "Marketplaces"
+        },
+        {
+          "domain": "marketplaces.albert.intern",
+          "name": "Marketplaces"
+        },
+        {
+          "domain": "127.0.0.1",
+          "name": "Marketplaces"
+        }
+      ]
+    },
+    {
+      "name": "Luxury Watches",
+      "description": "Discover the finest collection of luxury watches from the world's most prestigious brands. Timeless elegance and precision craftsmanship await you.",
+      "owner": {
+        "username": "admin_watches",
+        "email": "admin@watches.soops.intern",
+        "password": "securepassword2"
+      },
+      "logo": "Luxury_Watch_Logo.jpg",
+      "sites": [
+        {
+          "domain": "watches.soops.intern",
+          "name": "Luxury Watches"
+        },
+        {
+          "domain": "watches.christiaan.intern",
+          "name": "Luxury Watches"
+        },
+        {
+          "domain": "watches.albert.intern",
+          "name": "Luxury Watches"
+        },
+        {
+          "domain": "127.0.0.2",
+          "name": "Luxury Watches"
+        },
+        {
+          "domain": "localhost",
+          "name": "Luxury Watches"
+        },
+        {
+          "domain": "miekeservices.soops.intern",
+          "name": "Luxury Watches"
+        },
+        {
+          "domain": "mieke.soops.intern",
+          "name": "Luxury Watches"
+        }
+      ]
+    },
+    {
+      "name": "Bentleys Galore",
+      "description": "Indulge in the ultimate luxury with our exclusive collection of Bentleys. Experience unparalleled performance and sophistication.",
+      "owner": {
+        "username": "admin_bentleys",
+        "email": "admin@bentleys.soops.intern",
+        "password": "securepassword3"
+      },
+      "logo": "Bentleys_Galore_Logo.jpg",
+      "sites": [
+        {
+          "domain": "bentleys.soops.intern",
+          "name": "Bentleys Galore"
+        },
+        {
+          "domain": "bentleys.christiaan.intern",
+          "name": "Bentleys Galore"
+        },
+        {
+          "domain": "bentleys.albert.intern",
+          "name": "Bentleys Galore"
+        },
+        {
+          "domain": "127.0.0.3",
+          "name": "Bentleys Galore"
+        }
+      ]
+    },
+    {
+      "name": "Best Spaceships",
+      "description": "Explore the cosmos with our state-of-the-art spaceships. Whether for leisure or research, our fleet offers the best in space travel technology.",
+      "owner": {
+        "username": "admin_spaceships",
+        "email": "admin@spaceships.soops.intern",
+        "password": "securepassword4"
+      },
+      "logo": "Best_Spaceships_Logo.jpg",
+      "sites": [
+        {
+          "domain": "spaceships.soops.intern",
+          "name": "Best Spaceships"
+        },
+        {
+          "domain": "spaceships.christiaan.intern",
+          "name": "Best Spaceships"
+        },
+        {
+          "domain": "spaceships.albert.intern",
+          "name": "Best Spaceships"
+        },
+        {
+          "domain": "127.0.0.4",
+          "name": "Best Spaceships"
+        }
+      ]
+    }
+  ]
+}

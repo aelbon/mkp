@@ -1,0 +1,84 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+      {
+          "name": "Python Debugger: Django",
+          "type": "debugpy",
+          "request": "launch",
+          "program": "${workspaceFolder}/manage.py",
+          "args": [
+              "runserver",
+              "0.0.0.0:8000"
+          ],
+          "pathMappings": [
+              {
+                  "localRoot": "${workspaceFolder}\\.venv\\Lib\\site-packages",
+                  "remoteRoot": "/app"
+              }
+          ],
+          "python": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+          "django": true,
+          "env": {
+              "DJANGO_SETTINGS_MODULE": "website.settings",
+              "PYTHONPATH": "${workspaceFolder}",
+              "POSTGRES_USER": "mkp",
+              "POSTGRES_PASSWORD": "mkp"
+          },
+          "console": "integratedTerminal",
+          "preLaunchTask": "Run Migrate and Collectstatic" ,
+          "justMyCode": false
+      },
+      {
+          "name": "Python: Attach to Django",
+          "type": "debugpy",
+          "request": "attach",
+          "connect": {
+              "host": "localhost",
+              "port": 5678
+          },
+          "pathMappings": [
+              {
+                  "localRoot": "${workspaceFolder}",
+                  "remoteRoot": "/app"
+              }
+          ]
+      },
+      {
+        "name": "Python: Current File",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${file}",
+        "console": "integratedTerminal",
+        "env": {
+            "DJANGO_SETTINGS_MODULE": "website.settings",
+            "PYTHONPATH": "${workspaceFolder}",
+            "POSTGRES_USER": "mkp",
+            "POSTGRES_PASSWORD": "mkp"
+        }
+    },
+    {
+        "name": "Python: Django Migrate",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/manage.py",
+        "args": [
+            "migrate"
+        ],
+        "console": "integratedTerminal",
+        "justMyCode": true
+    },
+    {
+        "name": "Python: Django Collect Static",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/manage.py",
+        "args": [
+           "collectstatic",
+           "--noinput"
+        ],
+        "console": "integratedTerminal",
+        "justMyCode": true
+    }
+  ]
+
+}

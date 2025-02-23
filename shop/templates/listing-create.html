@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add product
+{% endblock %}
+
+{% block content %}
+<main class="container">
+    <h1>Add a New Product</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% for field in form %}
+        <div>
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+            {% for error in field.errors %}
+            <small style="color: var(--pico-del-color);">{{ error }}</small>
+            {% endfor %}
+            {% endif %}
+        </div>
+        {% endfor %}
+
+
+        <div>
+            <label for="images">Images:</label>
+            <input type="file" name="images" multiple
+                aria-invalid="{% if image_errors %}true{% else %}flase{% endif %}">
+            {% if image_errors %}
+            {% for error in image_errors %}
+            <small style="color: var(--pico-del-color);">{{error}}</small>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+
+        <button type="submit">Add Product</button>
+    </form>
+</main>
+{% endblock %}

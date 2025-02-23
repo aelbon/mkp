@@ -1,0 +1,78 @@
+{% load i18n %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/static/css/pico.min.css" />
+    <link rel="icon" type="image/svg" href="/static/svg/23f0.svg" />
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .top-nav {
+            padding-left: 2rem;
+            padding-right: 2rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            background-color: rgba(58, 50, 50, 0.918);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+
+            nav {
+                h1 {
+                    margin: 0px;
+                }
+
+                li {
+                    padding-top: 0px;
+                    padding-bottom: 0px;
+                }
+
+                .routes {
+                    gap: 1rem;
+                }
+            }
+        }
+    </style>
+    {% block head %} {% endblock %}
+
+    <title>{% block title %}Base page{% endblock %}</title>
+</head>
+
+<body>
+    <!-- added to fix firefox rendering bug -->
+    <!-- stops page from rendering befire css is loaded -->
+    <script>
+        0;
+    </script>
+
+    <header class="top-nav">
+        <nav>
+            <ul>
+                <li>
+                    <a href="/" style="color: inherit; text-decoration: none">
+                        <h1>{{ request.current_site.name }}</h1>
+                    </a>
+                </li>
+            </ul>
+            <ul class="routes">
+                <li><a href="/watches/listing">Buy</a></li>
+                <li><a href="/watches/listing/create">Sell</a></li>
+                <li><a href="/watches/faq">FAQ</a></li>
+                {% if request.user.is_authenticated %}
+                <li><a href="/acounts/logout">Logout</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    {% block content %}{% endblock %}
+</body>
+
+</html>

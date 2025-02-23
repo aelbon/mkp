@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Exclusive Watches
+{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        background-image: url("/watches/images/{{ request.current_shop.logo.id }}");
+        background-size: cover;
+    }
+
+    .content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    main {
+
+        padding: 2rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(58, 50, 50, 0.349);
+    }
+
+    main h1, main p {
+        color: red; /* Ensure h1 and p elements inside main are red */
+        text-align: center;
+        font-style: italic;
+    }
+    a[role="button"] {
+        max-width: 200px;
+        background-color: transparent; /* Remove blue background */
+        color: white;
+        border: none; /* Remove border */
+        text-decoration: none; /* Remove underline */
+        padding: 10px 20px; /* Add some padding */
+        border-radius: 5px; /* Optional: Add rounded corners */
+        display: inline-block; /* Ensure it behaves like a button */
+        text-align: center; /* Center the text */
+    }
+
+    a[role="button"]:hover {
+        background-color: rgba(255, 255, 255, 0.1); /* Optional: Add hover effect */
+    }
+
+</style>
+
+
+<div class="content">
+
+    <main>
+        <h1>{{ request.current_shop.description }}</h1>
+        {% if user.is_authenticated %}
+            <p>Hello, {{ user.username }}!</p>
+        {% else %}
+            <p>You are not logged in.</p>
+            <a role="button" href="/accounts/signup">Register Today</a>
+            <a role="button" href="/accounts/login">Join Today</a>
+        {% endif %}
+    </main>
+</div>
+
+{% endblock %}

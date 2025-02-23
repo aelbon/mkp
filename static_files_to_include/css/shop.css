@@ -1,0 +1,41 @@
+.authenticationButton {
+    background-color: #4c6baf; /* Green background */
+    border: none; /* Remove border */
+    color: white; /* White text */
+    padding: 15px 32px; /* Larger padding */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); /* Add shadow */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+}
+
+.authenticationButton:hover {
+    background-color: #5e77ab; /* Darker green on hover */
+    transform: scale(1.05); /* Slightly larger on hover */
+}
+
+.fancyButton {
+    background-color: #ac4caf; /* Green background */
+    border: none; /* Remove border */
+    color: white; /* White text */
+    padding: 15px 32px; /* Larger padding */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px; /* More rounded corners */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); /* Add shadow */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+}
+
+.fancyButton:hover {
+    background-color: #a04594; /* Darker green on hover */
+    transform: scale(1.05); /* Slightly larger on hover */
+}

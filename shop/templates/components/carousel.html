@@ -1,0 +1,28 @@
+<section class="carousel" data-index="0">
+    <div class="slide-container">
+        <div class="slide-wrapper">
+            <div class="slide-holder">
+                {% for image in images %}
+                <img src="/watches/images/{{image.id}}" alt="product image">
+                {% endfor %}
+            </div>
+        </div>
+        <div class="slide-info">
+            <div class="slide-nav">
+                <button class="prev" onclick="slideOne(event, -1)">&#10094;</button>
+                <button class="next" onclick="slideOne(event, 1)">&#10095;</button>
+            </div>
+
+            <p class="slide-counter">1/{{images|length}}</p>
+        </div>
+    </div>
+
+    {% if big %}
+    <div class="slide-map">
+        {% for image in images %}
+        <img onclick="handleMapClick(event)" data-index="{{forloop.counter0}}" src="/watches/images/{{image.id}}"
+            alt="some image">
+        {% endfor %}
+    </div>
+    {% endif %}
+</section>

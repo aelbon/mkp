@@ -1,0 +1,57 @@
+variables:
+  TAG_LATEST: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest
+  TAG_COMMIT: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
+
+
+stages:         
+  - build
+  - test
+  - deploy
+
+
+build:       
+  stage: build
+  only:
+    - main
+  image: docker:latest
+  tags: [docker-privileged,x86]
+  services: 
+    - name: docker:dind
+      command:
+        [
+#          '--insecure-registry','docker.soops.intern',
+          '--insecure-registry','gitlab.soops.intern:5050'
+        ]
+  script:
+        - docker build -t $TAG_COMMIT -t $TAG_LATEST .
+        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+        - docker push $TAG_COMMIT
+        - docker push $TAG_LATEST
+
+
+deploy_on_mieke:
+  stage: deploy
+  only:
+    - main
+  image: ubuntu:latest
+  tags: [x86]
+  before_script:
+    # Install ssh-agent if not already installed
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    # Run ssh-agent (inside the build environment)
+    - eval $(ssh-agent -s)
+    # Add the user SSH key from build variable (pub key known on mieke in .ssh/authorized_keys)
+    - chmod 400 "$SSH_PRIVATE_KEY"
+    - ssh-add "$SSH_PRIVATE_KEY"
+    # Create the SSH directory and give it the right permissions
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    # add mieke host key from build variable
+    - cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+  script:
+    - scp -P 54322 docker-compose.yml nginx.conf init-db.sh services@mieke.soops.intern:django-tryout/
+    - ssh -p 54322 services@mieke.soops.intern 'cd django-tryout && docker compose pull django && docker compose up -d'
+  environment:
+    name: production
+    url: http://miekeservices.soops.intern:3333/

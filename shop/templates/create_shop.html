@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>   
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Shop</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#add-site').click(function() {
+                var form_idx = $('#id_shop_sites-TOTAL_FORMS').val();
+                $('#formset-container').append($('#empty-form').html().replace(/__prefix__/g, form_idx));
+                $('#id_shop_sites-TOTAL_FORMS').val(parseInt(form_idx) + 1);
+            });
+        });
+    </script>
+     
+  
+</head>
+<body>
+    <h1>Create Shop</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ shop_form.as_p }}
+        <h2>Sites</h2>
+        <div id="formset-container">
+            {{ site_formset.management_form }}
+            {% for form in site_formset %}
+                <div class="site-form">
+                    {{ form.as_p }}
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" id="add-site">Add Site</button>
+        <button type="submit">Save Shop</button>
+    </form>
+    <div id="empty-form" style="display: none;">
+        {{ site_formset.empty_form.as_p }}
+    </div>
+</body>
+</html>

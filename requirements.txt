@@ -1,0 +1,11 @@
+debugpy
+requests-toolbelt
+python-dotenv
+django
+django-allauth
+wagtail
+psycopg2
+gunicorn
+Pillow
+pandas
+

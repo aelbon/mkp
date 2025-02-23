@@ -1,0 +1,34 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Django Migrate",
+            "type": "shell",
+            "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+            "args": [
+                "${workspaceFolder}/manage.py",
+                "migrate"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Django Collectstatic",
+            "type": "shell",
+            "command": "${workspaceFolder}/.venv/Scripts/python.exe",
+            "args": [
+                "${workspaceFolder}/manage.py",
+                "collectstatic",
+                "--noinput"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Migrate and Collectstatic",
+            "dependsOn": [
+                "Django Migrate",
+                "Django Collectstatic"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

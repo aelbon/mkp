@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Listing
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'shop/css/carousel.css' %}">
+<script type="module" src="{% static 'shop/js/carousel.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .centered {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 20px;
+
+    }
+
+    .card {
+        flex: 1 0 500px;
+        transition: transform 0.1s, border 0.4s;
+
+        border: solid transparent 2px;
+
+        p,
+        h2,
+        ul {
+            margin-bottom: 0px;
+        }
+
+        .space-between {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+
+    .card:hover {
+        transform: scale(1.02);
+        cursor: pointer;
+        border: solid rgb(51, 51, 51) 2px;
+    }
+
+    @media screen and (min-width: 768px) {
+        .card {
+            max-width: calc(50% - 1em);
+        }
+    }
+
+    @media screen and (min-width: 1280px) {
+        .card {
+            max-width: calc(33% - 1em);
+        }
+    }
+</style>
+
+<main class="container ">
+    <div class="centered">
+
+        {% for product in products %}
+        <article class="card" onclick="location.href='listing/details/{{product.id}}'">
+            {% if product.images.all %}
+            {% with images=product.images.all %}
+            {% include "components/carousel.html" %}
+            {% endwith %}
+            {% endif %}
+
+            <h2>{{product.title}}</h2>
+            <p>{{product.manufacturer}} | {{product.model}} | {{product.condition}}</p>
+            <div class="space-between">
+                <p>€{{product.price}}</p>
+                <p>{{product.location}}</p>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</main>
+{% endblock %}

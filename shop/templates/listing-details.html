@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Listing details
+{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'shop/css/carousel.css' %}">
+<script type="module" src="{% static 'shop/js/carousel.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<style>
+    .carousel-holder section {
+        margin-bottom: 0px !important;
+    }
+</style>
+
+<main style="padding: 20px">  
+        <div class="grid"></div>
+        <article class="carousel-holder">
+            {% if product.images.all %}
+            {% with images=product.images.all big=True %}
+            {% include "components/carousel.html" %}
+            {% endwith %}
+            {% endif %}
+        </article>
+        <article>
+            <h1>{{product.title}}</h1>
+            {% if display_edit %}
+            <button onclick="location.href='/watches/listing/create/{{product.id}}'">EDIT</button>
+            {% endif %}
+            <table>
+                <tr>
+                    <td>Price:</td>
+                    <td>€{{product.price}}</td>
+                </tr>
+                <tr>
+                    <td>Status:</td>
+                    <td>{{product.status}}</td>
+                </tr>
+                <tr>
+                    <td>Reference No:</td>
+                    <td>{{product.referenceNumber}}</td>
+                </tr>
+                <tr>
+                    <td>Manufacturer:</td>
+                    <td>{{product.manufacturer}}</td>
+                </tr>
+                <tr>
+                    <td>Model:</td>
+                    <td>{{product.model}}</td>
+                </tr>
+                <tr>
+                    <td>Condition:</td>
+                    <td>{{product.condition}}</td>
+                </tr>
+                <tr>
+                    <td>Location:</td>
+                    <td>{{product.location}}</td>
+                </tr>
+                <tr>
+                    <td>Availability:</td>
+                    <td>{{product.availability}}</td>
+                </tr>
+            </table>
+
+        </article>
+    </div>
+
+    <article>
+        <h3>Description</h3>
+        <p>{{product.description}}</p>
+    </article>
+
+</main>
+{% endblock %}
