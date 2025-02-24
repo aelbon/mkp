@@ -1,85 +1,38 @@
-{# templates/shop_customizer/preview.html #}
-{% extends "base.html" %}
+{% extends "shop_customizer/base.html" %}
 
 {% block content %}
-<div class="preview-container">
-    <style>
-        :root {
-            --primary-color: {{ customization.primary_color }};
-            --secondary-color: {{ customization.secondary_color }};
-            --accent-color: {{ customization.accent_color }};
-            --heading-font: {{ customization.heading_font }};
-            --body-font: {{ customization.body_font }};
-        }
-        
-        body {
-            font-family: var(--body-font);
-            background-color: var(--secondary-color);
-            color: var(--primary-color);
-        }
-        
-        h1, h2, h3, h4, h5, h6 {
-            font-family: var(--heading-font);
-            color: var(--primary-color);
-        }
-        
-        .btn-accent {
-            background-color: var(--accent-color);
-            color: white;
-        }
-    </style>
-
-    <div class="preview-content">
-        <h1>Sample Store Header</h1>
-        
-        <div class="product-grid">
-            <!-- Sample product cards to show styling -->
-            <div class="product-card">
-                <h3>Sample Product</h3>
-                <p class="price">$99.99</p>
-                <p class="description">This is a sample product description to show how text will look with your chosen styles.</p>
-                <button class="btn-accent">Add to Cart</button>
-            </div>
-            
-            <div class="product-card">
-                <h3>Another Product</h3>
-                <p class="price">$149.99</p>
-                <p class="description">Another sample product to demonstrate your styling choices.</p>
-                <button class="btn-accent">Add to Cart</button>
-            </div>
-        </div>
+<div class="layout-container">
+    <!-- Sidebar with customization form -->
+    <div class="sidebar">
+        {% include "shop_customizer/customize_form.html" %}
+    </div>
+    
+    <!-- Preview area -->
+    <div id="preview-container">
+        {% include "shop_customizer/preview_content.html" %}
     </div>
 </div>
 
 <style>
-.preview-container {
-    padding: 2rem;
-}
-
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+.layout-container {
+    display: flex;
     gap: 2rem;
-    margin-top: 2rem;
+    padding: 1rem;
 }
 
-.product-card {
+.sidebar {
+    flex: 0 0 300px;
     padding: 1rem;
-    border: 1px solid var(--primary-color);
+    background: #f5f5f5;
     border-radius: 8px;
 }
 
-.price {
-    font-size: 1.25rem;
-    color: var(--accent-color);
-    font-weight: bold;
-}
-
-.btn-accent {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+#preview-container {
+    flex: 1;
+    min-height: 500px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: auto;
 }
 </style>
 {% endblock %}

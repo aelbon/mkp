@@ -1,0 +1,186 @@
+<form class="customization-form">
+    {% csrf_token %}
+    
+    <div class="form-section">
+        <h3>Colors</h3>
+        <div class="color-pickers">
+            <div class="form-group">
+                <label for="id_primary_color">Primary Color</label>
+                <input type="color" 
+                       name="primary_color" 
+                       id="id_primary_color"
+                       value="{{ form.primary_color.value|default:'#000000' }}"
+                       hx-post="{% url 'shop_customizer:preview' %}"
+                       hx-trigger="change"
+                       hx-target="#preview-container"
+                       hx-swap="innerHTML">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_secondary_color">Secondary Color</label>
+                <input type="color" 
+                       name="secondary_color" 
+                       id="id_secondary_color"
+                       value="{{ form.secondary_color.value|default:'#ffffff' }}"
+                       hx-post="{% url 'shop_customizer:preview' %}"
+                       hx-trigger="change"
+                       hx-target="#preview-container"
+                       hx-swap="innerHTML">
+            </div>
+            
+            <div class="form-group">
+                <label for="id_accent_color">Accent Color</label>
+                <input type="color" 
+                       name="accent_color" 
+                       id="id_accent_color"
+                       value="{{ form.accent_color.value|default:'#007bff' }}"
+                       hx-post="{% url 'shop_customizer:preview' %}"
+                       hx-trigger="change"
+                       hx-target="#preview-container"
+                       hx-swap="innerHTML">
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-section">
+        <h3>Typography</h3>
+        <div class="form-group">
+            <label for="id_heading_font">Heading Font</label>
+            <select name="heading_font" 
+                    id="id_heading_font"
+                    hx-post="{% url 'shop_customizer:preview' %}"
+                    hx-trigger="change"
+                    hx-target="#preview-container"
+                    hx-swap="innerHTML">
+                <option value="Arial, sans-serif" {% if form.heading_font.value == 'Arial, sans-serif' %}selected{% endif %}>Arial</option>
+                <option value="Helvetica, sans-serif" {% if form.heading_font.value == 'Helvetica, sans-serif' %}selected{% endif %}>Helvetica</option>
+                <option value="Georgia, serif" {% if form.heading_font.value == 'Georgia, serif' %}selected{% endif %}>Georgia</option>
+                <option value="Times New Roman, serif" {% if form.heading_font.value == 'Times New Roman, serif' %}selected{% endif %}>Times New Roman</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="id_body_font">Body Font</label>
+            <select name="body_font" 
+                    id="id_body_font"
+                    hx-post="{% url 'shop_customizer:preview' %}"
+                    hx-trigger="change"
+                    hx-target="#preview-container"
+                    hx-swap="innerHTML">
+                <option value="Arial, sans-serif" {% if form.body_font.value == 'Arial, sans-serif' %}selected{% endif %}>Arial</option>
+                <option value="Helvetica, sans-serif" {% if form.body_font.value == 'Helvetica, sans-serif' %}selected{% endif %}>Helvetica</option>
+                <option value="Georgia, serif" {% if form.body_font.value == 'Georgia, serif' %}selected{% endif %}>Georgia</option>
+                <option value="Times New Roman, serif" {% if form.body_font.value == 'Times New Roman, serif' %}selected{% endif %}>Times New Roman</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <button type="button" 
+                class="save-button"
+                hx-post="{% url 'shop_customizer:save_customization' %}"
+                hx-trigger="click"
+                hx-swap="none">
+            Save Changes
+        </button>
+    </div>
+</form>
+
+<style>
+.customization-form {
+    padding: 1rem;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-section h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.color-pickers {
+    display: grid;
+    gap: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #444;
+}
+
+input[type="color"] {
+    width: 100%;
+    height: 40px;
+    padding: 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="color"]:hover {
+    border-color: #999;
+}
+
+select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 1rem;
+}
+
+select:hover {
+    border-color: #999;
+}
+
+select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+}
+
+.save-button {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.save-button:hover {
+    background-color: #0056b3;
+}
+
+.save-button:active {
+    background-color: #004085;
+}
+</style>
+
+<script>
+// Add success/error handling for save action
+document.body.addEventListener('htmx:afterRequest', function(evt) {
+    if (evt.detail.pathInfo.requestPath === "{% url 'shop_customizer:save_customization' %}") {
+        const response = JSON.parse(evt.detail.xhr.responseText);
+        if (response.status === 'success') {
+            alert('Changes saved successfully!');
+        } else {
+            alert('Error saving changes: ' + response.message);
+        }
+    }
+});
+</script>
