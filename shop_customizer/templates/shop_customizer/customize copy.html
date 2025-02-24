@@ -1,0 +1,153 @@
+{# templates/shop_customizer/customize.html #}
+{% extends "shop_customizer/base.html" %}
+{% load static %}
+{% block content %}
+<div class="customizer-container">
+    <!-- Sidebar with form -->
+    <div class="customizer-sidebar">
+        <h2>Customize Your Shop</h2>
+        <form class="customization-form"
+              hx-post="{% url 'shop_customizer:preview' %}"
+              hx-trigger="change delay:100ms"
+              hx-target="#preview-container"
+              hx-include="[name]">
+            {% csrf_token %}
+            
+            <div class="form-section">
+                <h3>Colors</h3>
+                <div class="color-pickers">
+                    <div class="form-group">
+                        <label for="{{ form.primary_color.id_for_label }}">Primary Color</label>
+                        {{ form.primary_color }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.secondary_color.id_for_label }}">Secondary Color</label>
+                        {{ form.secondary_color }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.accent_color.id_for_label }}">Accent Color</label>
+                        {{ form.accent_color }}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>Typography</h3>
+                <div class="form-group">
+                    <label for="{{ form.heading_font.id_for_label }}">Heading Font</label>
+                    {{ form.heading_font }}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.body_font.id_for_label }}">Body Font</label>
+                    {{ form.body_font }}
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Preview container -->
+    <div class="preview-wrapper">
+        <div id="preview-container" 
+             hx-get="{% url 'shop_customizer:preview' %}" 
+             hx-trigger="load">
+            <!-- Preview content will load here -->
+        </div>
+    </div>
+</div>
+
+<style>
+.customizer-container {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    max-height: calc(100vh - 4rem);
+    overflow: hidden;
+}
+
+.customizer-sidebar {
+    flex: 0 0 300px;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.preview-wrapper {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#preview-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    background: white;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.color-pickers {
+    display: grid;
+    gap: 1rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background: var(--accent-color, #007bff);
+    color: white;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+input[type="color"] {
+    height: 40px;
+    padding: 2px;
+}
+</style>
+{% endblock %}

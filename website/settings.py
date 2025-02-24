@@ -78,7 +78,8 @@ INSTALLED_APPS = [
     'wagtail',
 
     'shop',
-    'shop_customizer'
+    'shop_customizer',
+    'django_htmx'
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -100,6 +101,7 @@ MIDDLEWARE = [
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
     'shop.middleware.DatabaseUserMiddleware',
     # 'shop.middleware.ForwardedPortMiddleware',
+    'django_htmx.middleware.HtmxMiddleware'
 ]
 # Our own defined settings
 EMAIL_STRICT_CA = os.environ.get('EMAIL_STRICT_CA', False) == 'True'
@@ -226,8 +228,6 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-X_FRAME_OPTIONS = 'ALLOWALL'
 
 initialize_logging(BASE_DIR)
 

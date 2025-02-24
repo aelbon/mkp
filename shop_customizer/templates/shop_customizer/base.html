@@ -1,0 +1,31 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    
+    <!-- Add HTMX from CDN -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    
+    <!-- Optional: Add HTMX extensions if needed -->
+    <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
+    
+    <!-- Optional: Add CSS framework or custom styles -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+
+    <!-- Optional: Add custom JavaScript -->
+    <script>
+        // HTMX events and custom handlers
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            // Add CSRF token to all HTMX requests
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+    </script>
+</body>
+</html>

@@ -8,4 +8,4 @@ psycopg2
 gunicorn
 Pillow
 pandas
-
+django_htmx
