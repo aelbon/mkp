@@ -79,7 +79,7 @@ INSTALLED_APPS = [
 
     'shop',
     'shop_customizer',
-    'django_htmx'
+    'document_analyzer'
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -101,7 +101,6 @@ MIDDLEWARE = [
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
     'shop.middleware.DatabaseUserMiddleware',
     # 'shop.middleware.ForwardedPortMiddleware',
-    'django_htmx.middleware.HtmxMiddleware'
 ]
 # Our own defined settings
 EMAIL_STRICT_CA = os.environ.get('EMAIL_STRICT_CA', False) == 'True'
@@ -223,11 +222,15 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
+# LLM API settings
+LLM_API_KEY = 'your_api_key_here'
+LLM_API_ENDPOINT = 'https://api.example.com/analyze'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 initialize_logging(BASE_DIR)
 

@@ -34,6 +34,8 @@ urlpatterns = [
     
     path('simple_cms/', include('shop_customizer.urls')),
     
+     path('analyzer/', include('document_analyzer.urls', namespace='document_analyzer')),
+    
     path('', lambda request: redirect('watches/', permanent=True)),
 ]
 
