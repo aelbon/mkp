@@ -1,5 +1,3 @@
-// document_analyzer/static/document_analyzer/js/editor.js
-
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize editable cells
     initEditableCells();
@@ -11,6 +9,14 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.addEventListener('htmx:afterSwap', function(event) {
         initEditableCells();
         applySectionBoxStyles();
+    });
+
+    // Add event listener for sections-updated event to trigger layout preview update
+    document.body.addEventListener('sections-updated', function() {
+        const previewContainer = document.getElementById('preview-container');
+        if (previewContainer) {
+            htmx.trigger(previewContainer, 'load');
+        }
     });
 });
 
