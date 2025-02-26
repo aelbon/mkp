@@ -91,6 +91,9 @@ def update_section(request, section_id):
             setattr(section, field, value)
             section.save()
             
+            # Debug information for section updates
+            print(f"Section {section_id} updated: {field} = {value}")
+            
             # Return success
             return HttpResponse(value)
         except ValueError:
