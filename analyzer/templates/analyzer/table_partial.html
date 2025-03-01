@@ -4,6 +4,13 @@
             <h2 class="text-lg leading-6 font-medium text-gray-900">{{ document.title }}</h2>
             <p class="mt-1 max-w-2xl text-sm text-gray-500">Uploaded: {{ document.uploaded_at|date:"M d, Y" }}</p>
         </div>
+        <!-- Manual refresh button for testing -->
+        <button 
+            onclick="refreshPreview()"
+            class="bg-blue-500 text-white px-3 py-1 rounded text-sm"
+        >
+            ↻ Refresh Preview
+        </button>
     </div>
     
     <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
@@ -11,7 +18,7 @@
             <!-- Editable Table -->
             <div class="overflow-x-auto">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Document Analysis</h3>
-                <table class="min-w-full divide-y divide-gray-200">
+                <table class="min-w-full divide-y divide-gray-200" data-document-id="{{ document.id }}">
                     <thead class="bg-gray-50">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Section</th>
@@ -28,7 +35,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div
                                     class="editable-cell"
-                                    hx-post="{% url 'document_analyzer:update_section' section.id %}"
+                                    hx-post="{% url 'analyzer:update_section' section.id %}"
                                     hx-trigger="edited"
                                     hx-vals='{"field": "section_name"}'
                                     data-original-value="{{ section.section_name }}"
@@ -37,7 +44,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div
                                     class="editable-cell"
-                                    hx-post="{% url 'document_analyzer:update_section' section.id %}"
+                                    hx-post="{% url 'analyzer:update_section' section.id %}"
                                     hx-trigger="edited"
                                     hx-vals='{"field": "content"}'
                                     data-original-value="{{ section.content }}"
@@ -46,7 +53,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div
                                     class="editable-cell"
-                                    hx-post="{% url 'document_analyzer:update_section' section.id %}"
+                                    hx-post="{% url 'analyzer:update_section' section.id %}"
                                     hx-trigger="edited"
                                     hx-vals='{"field": "x_position"}'
                                     data-original-value="{{ section.x_position }}"
@@ -55,7 +62,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div
                                     class="editable-cell"
-                                    hx-post="{% url 'document_analyzer:update_section' section.id %}"
+                                    hx-post="{% url 'analyzer:update_section' section.id %}"
                                     hx-trigger="edited"
                                     hx-vals='{"field": "y_position"}'
                                     data-original-value="{{ section.y_position }}"
@@ -64,7 +71,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div
                                     class="editable-cell"
-                                    hx-post="{% url 'document_analyzer:update_section' section.id %}"
+                                    hx-post="{% url 'analyzer:update_section' section.id %}"
                                     hx-trigger="edited"
                                     hx-vals='{"field": "width"}'
                                     data-original-value="{{ section.width }}"
@@ -73,7 +80,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div
                                     class="editable-cell"
-                                    hx-post="{% url 'document_analyzer:update_section' section.id %}"
+                                    hx-post="{% url 'analyzer:update_section' section.id %}"
                                     hx-trigger="edited"
                                     hx-vals='{"field": "height"}'
                                     data-original-value="{{ section.height }}"
@@ -87,15 +94,69 @@
             
             <!-- Layout Preview -->
             <div>
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Layout Preview</h3>
+                <h3 class="text-lg font-medium text-gray-900 mb-4">
+                    Layout Preview
+                </h3>
                 <div 
                     id="preview-container"
-                    hx-get="{% url 'document_analyzer:get_preview' document.id %}"
-                    hx-trigger="load, sections-updated from:body"
+                    data-document-id="{{ document.id }}"
+                    hx-get="{% url 'analyzer:get_preview' document.id %}"
+                    hx-trigger="load"
                 >
-                    {% include "document_analyzer/preview_partial.html" with document=document sections=sections %}
+                    {% include "analyzer/preview_partial.html" with document=document sections=sections %}
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Add debug info at bottom -->
+<div class="mt-6 px-4 py-3 bg-gray-100 rounded-lg text-xs">
+    <p class="font-semibold">Debug Info:</p>
+    <p>Document ID: {{ document.id }}</p>
+    <p>Sections count: {{ sections|length }}</p>
+</div>
+
+<!-- Ensure we have access to editor.js -->
+<script>
+    // Check if refreshPreview function is available
+    if (typeof refreshPreview !== 'function') {
+        console.warn('refreshPreview function not found, creating backup');
+        function refreshPreview() {
+            console.log('Backup refresh function called');
+            const documentId = document.querySelector('table').dataset.documentId || 
+                               document.getElementById('preview-container').dataset.documentId;
+            
+            if (!documentId) {
+                console.error('Could not find document ID');
+                return;
+            }
+            
+            console.log('Refreshing preview for document ID:', documentId);
+            
+            // Manually fetch and update the preview
+            fetch(`/analyzer/preview/${documentId}/`)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('preview-container').innerHTML = html;
+                    
+                    // Apply styles after update
+                    const sectionBoxes = document.querySelectorAll('.section-box');
+                    sectionBoxes.forEach((box, index) => {
+                        const x = parseFloat(box.getAttribute('data-x'));
+                        const y = parseFloat(box.getAttribute('data-y'));
+                        const width = parseFloat(box.getAttribute('data-width'));
+                        const height = parseFloat(box.getAttribute('data-height'));
+                        
+                        box.style.position = 'absolute';
+                        box.style.left = (x * 100) + '%';
+                        box.style.top = (y * 100) + '%';
+                        box.style.width = (width * 100) + '%';
+                        box.style.height = (height * 100) + '%';
+                        box.style.backgroundColor = `hsl(${(index * 60) % 360}, 70%, 85%)`;
+                    });
+                })
+                .catch(error => console.error('Error refreshing preview:', error));
+        }
+    }
+</script>

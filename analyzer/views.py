@@ -14,7 +14,7 @@ def index(request):
     form = DocumentUploadForm()
     documents = Document.objects.filter(user=request.user).order_by('-uploaded_at')
     
-    return render(request, 'document_analyzer/index.html', {
+    return render(request, 'analyzer/index.html', {
         'form': form,
         'documents': documents
     })
@@ -42,7 +42,7 @@ def upload_document(request):
                 DocumentSection.objects.bulk_create(sections)
                 
                 # Return the table partial with HTMX
-                return render(request, 'document_analyzer/table_partial.html', {
+                return render(request, 'analyzer/table_partial.html', {
                     'document': document,
                     'sections': sections
                 })
@@ -60,7 +60,7 @@ def get_document(request, document_id):
     document = get_object_or_404(Document, id=document_id, user=request.user)
     sections = document.sections.all()
     
-    return render(request, 'document_analyzer/index.html', {
+    return render(request, 'analyzer/index.html', {
         'form': DocumentUploadForm(),
         'document': document,
         'sections': sections,
@@ -91,10 +91,10 @@ def update_section(request, section_id):
             setattr(section, field, value)
             section.save()
             
-            # Debug information for section updates
-            print(f"Section {section_id} updated: {field} = {value}")
+            # Debug info
+            print(f"Updated section {section_id}: {field} = {value}")
             
-            # Return success
+            # Return success with updated value
             return HttpResponse(value)
         except ValueError:
             return HttpResponse("Invalid value", status=400)
@@ -105,7 +105,7 @@ def update_section(request, section_id):
 def get_preview(request, document_id):
     """Get the layout preview partial"""
     document = get_object_or_404(Document, id=document_id, user=request.user)
-    sections = document.sections.all()
+    sections = document.sections.all().order_by('id')  # Ensure consistent order
     
     # Debug info
     print(f"Preview requested for document {document_id}")
@@ -113,9 +113,17 @@ def get_preview(request, document_id):
     for section in sections:
         print(f"Section: {section.section_name}, Position: ({section.x_position}, {section.y_position}), Size: {section.width}x{section.height}")
     
-    return render(request, 'document_analyzer/preview_partial.html', {
+    # Check if this is a direct request or an included partial
+    is_htmx = request.headers.get('HX-Request') == 'true'
+    direct_load = not is_htmx and request.headers.get('X-Requested-With') != 'XMLHttpRequest'
+    
+    print(f"Request type: HTMX={is_htmx}, Direct={direct_load}")
+    
+    return render(request, 'analyzer/preview_partial.html', {
         'document': document,
-        'sections': sections
+        'sections': sections,
+        'include_htmx': direct_load,  # Include HTMX if directly loaded
+        'load_styles': True,  # Always run the style application
     })
 
 @login_required
@@ -139,4 +147,18 @@ def debug_sections(request, document_id):
         'document_id': document_id,
         'sections_count': len(sections_data),
         'sections': sections_data
+    })
+
+# Add new direct update endpoint for forcing preview refresh
+@login_required
+@require_POST
+def force_preview_refresh(request, document_id):
+    """Force refresh of preview - useful for debugging"""
+    document = get_object_or_404(Document, id=document_id, user=request.user)
+    sections = document.sections.all()
+    
+    return render(request, 'analyzer/preview_partial.html', {
+        'document': document,
+        'sections': sections,
+        'load_styles': True,
     })

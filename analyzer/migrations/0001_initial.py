@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 ('y_position', models.FloatField()),
                 ('width', models.FloatField()),
                 ('height', models.FloatField()),
-                ('document', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sections', to='document_analyzer.document')),
+                ('document', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sections', to='analyzer.document')),
             ],
         ),
     ]

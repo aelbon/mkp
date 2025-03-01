@@ -1,4 +1,4 @@
-{% extends "document_analyzer/base.html" %}
+{% extends "analyzer/base.html" %}
 
 {% block content %}
 <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
@@ -8,7 +8,7 @@
     </div>
     <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
         <form
-            hx-post="{% url 'document_analyzer:upload_document' %}"
+            hx-post="{% url 'analyzer:upload_document' %}"
             hx-target="#results-container"
             hx-indicator="#loading-indicator"
             enctype="multipart/form-data"
@@ -53,8 +53,8 @@
             {% for doc in documents %}
             <li class="px-4 py-4 hover:bg-gray-50">
                 <a 
-                    href="{% url 'document_analyzer:get_document' doc.id %}"
-                    hx-get="{% url 'document_analyzer:get_document' doc.id %}"
+                    href="{% url 'analyzer:get_document' doc.id %}"
+                    hx-get="{% url 'analyzer:get_document' doc.id %}"
                     hx-target="#results-container"
                     hx-push-url="true"
                     class="block"
@@ -74,7 +74,7 @@
 <!-- Results Container -->
 <div id="results-container" class="space-y-6">
     {% if document %}
-        {% include "document_analyzer/table_partial.html" with document=document sections=sections %}
+        {% include "analyzer/table_partial.html" with document=document sections=sections %}
     {% endif %}
 </div>
 
